@@ -22,6 +22,21 @@ void add_8(char **symbols, RDimension *rd);
 void add_9(char **symbols, RDimension *rd);
 void add_10(char **symbols, RDimension *rd);
 void gameloop(char **symbols, RDimension *rd);
+FILE* openFile(char *name, char *mode);
+void closeFile(FILE* f);
+void writePass(FILE* f, int pass);
+
+void writePass(FILE* f, int pass){
+	fprintf(f, "%d\n", pass);
+}
+
+void closeFile(FILE* f){
+	fclose(f);
+}
+
+FILE* openFile(char *name, char *mode){
+	return fopen(name, mode);
+}
 
 void showSymbols(char **symbols, RDimension *rd){
 	int i = 0,
@@ -248,6 +263,7 @@ char **createSymbols(){
 
 void gameloop(char **symbols, RDimension *rd){
 	int index = 0;
+	FILE* f;
 	printf("\nInsira o numero da peça:\n");
 	printf("Insira -1 para sair...\n");
 	scanf("%d", &index);
@@ -255,6 +271,9 @@ void gameloop(char **symbols, RDimension *rd){
 	mergePiece(symbols, rd, index);
 	system("clear");
 	showSymbols(symbols, rd);
+	f = openFile("passos.txt", "a");
+	writePass(f, index);
+	closeFile(f);
 	gameloop(symbols, rd);
 }
 
